@@ -12,7 +12,7 @@ function Login() {
 
     try {
       const response = await axios.post(
-        "http://localhost:3002/login",
+        "https://zerodha-backend-hia8.onrender.com/login",
         {
           email: email,
           password: password,
@@ -23,21 +23,28 @@ function Login() {
 
       const user = response.data.user;
 
+      if (!user) {
+        alert("Login failed. User data not received.");
+        return;
+      }
+
+      // Save logged-in user
+      localStorage.setItem("user", JSON.stringify(user));
+
       alert("Login successful!");
 
-      const userData = encodeURIComponent(
-        JSON.stringify(user)
-      );
+      const userData = encodeURIComponent(JSON.stringify(user));
 
+      // Redirect to live dashboard
       window.location.href =
-        "http://localhost:3001/?user=" + userData;
-
+        "https://zerodha-dashboard-4ef2.onrender.com/?user=" + userData;
     } catch (error) {
       console.log("LOGIN ERROR:", error);
+      console.log("SERVER RESPONSE:", error.response?.data);
 
       alert(
         error.response?.data?.message ||
-          "Login failed. Please try again."
+          "Login failed. Please check your email and password."
       );
     }
   };
@@ -45,7 +52,6 @@ function Login() {
   return (
     <div className="login-container">
       <div className="login-box">
-
         <h1>Welcome Back</h1>
 
         <p className="login-subtitle">
@@ -53,7 +59,6 @@ function Login() {
         </p>
 
         <form onSubmit={handleLogin}>
-
           <label>Email</label>
 
           <input
@@ -74,22 +79,15 @@ function Login() {
             required
           />
 
-          <button
-            type="submit"
-            className="login-button"
-          >
+          <button type="submit" className="login-button">
             Login
           </button>
-
         </form>
 
         <p className="signup-text">
           Don't have an account?{" "}
-          <Link to="/signup">
-            Sign Up
-          </Link>
+          <Link to="/signup">Sign Up</Link>
         </p>
-
       </div>
     </div>
   );
