@@ -28,16 +28,20 @@ function Login() {
         return;
       }
 
-      // Save logged-in user
+      // Save user permanently for dashboard navigation
       localStorage.setItem("user", JSON.stringify(user));
+
+      // Verify user was saved
+      console.log(
+        "USER SAVED:",
+        localStorage.getItem("user")
+      );
 
       alert("Login successful!");
 
-      const userData = encodeURIComponent(JSON.stringify(user));
-
-      // Redirect to live dashboard
+      // Send user to live dashboard
       window.location.href =
-        "https://zerodha-dashboard-4ef2.onrender.com/?user=" + userData;
+        "https://zerodha-dashboard-4ef2.onrender.com/";
     } catch (error) {
       console.log("LOGIN ERROR:", error);
       console.log("SERVER RESPONSE:", error.response?.data);
@@ -79,14 +83,19 @@ function Login() {
             required
           />
 
-          <button type="submit" className="login-button">
+          <button
+            type="submit"
+            className="login-button"
+          >
             Login
           </button>
         </form>
 
         <p className="signup-text">
           Don't have an account?{" "}
-          <Link to="/signup">Sign Up</Link>
+          <Link to="/signup">
+            Sign Up
+          </Link>
         </p>
       </div>
     </div>
