@@ -14,8 +14,8 @@ function Login() {
       const response = await axios.post(
         "https://zerodha-backend-hia8.onrender.com/login",
         {
-          email: email,
-          password: password,
+          email,
+          password,
         }
       );
 
@@ -28,20 +28,16 @@ function Login() {
         return;
       }
 
-      // Save user permanently for dashboard navigation
-      localStorage.setItem("user", JSON.stringify(user));
-
-      // Verify user was saved
-      console.log(
-        "USER SAVED:",
-        localStorage.getItem("user")
-      );
-
       alert("Login successful!");
 
-      // Send user to live dashboard
+      // Send user data to dashboard
+      const userData = encodeURIComponent(
+        JSON.stringify(user)
+      );
+
       window.location.href =
-        "https://zerodha-dashboard-4ef2.onrender.com/";
+        "https://zerodha-dashboard-4ef2.onrender.com/?user=" +
+        userData;
     } catch (error) {
       console.log("LOGIN ERROR:", error);
       console.log("SERVER RESPONSE:", error.response?.data);
